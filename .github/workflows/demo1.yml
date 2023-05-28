@@ -2,8 +2,18 @@ name: Events Demo 1
 on:
     pull_request:
         types:
-            - opend
+            - opened
+        branches:
+            - master
+            - "dev-*"
+            - "feat/**" # 이렇게 하면 이 브랜치들에 대한 PR이 열릴 때 마다
     workflow_dispatch:
+    push:
+        branches:
+            - master
+            # - 'dev-*' dev-로 시작하는 모든 브랜치 'feat/**': ex) feat/new
+        paths-ignore:
+            - ".github/workflows/*" # paths-ignore는 해당 경로의 파일이 변경되어도 실행안되게 paths는 반대
 jobs:
     deploy:
         runs-on: ubuntu-latest
