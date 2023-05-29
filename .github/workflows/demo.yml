@@ -9,8 +9,13 @@ jobs:
         steps:
             - name: Get code
               uses: actions/checkout@v3
+            - name: Cache dependencies
+              uses: actions/cache@v3
+              with:
+                  path: ~/.npm # 저장되는 경로 yarn은 ~/.cache/yarn
+                  key: deps-node-modules-${{ hashFiles('**/package-lock.json') }} # package-lock.json 파일의 해시를 기준으로 캐시 키를 생성
             - name: Install dependencies
-              run: npm ci
+              run: npm ci # yarn은 yarn install 또는 엄격하게 하려면 yarn install --frozen-lockfile
             - name: Lint code
               run: npm run lint
             - name: Test code
@@ -23,6 +28,11 @@ jobs:
         steps:
             - name: Get code
               uses: actions/checkout@v3
+            - name: Cache dependencies
+              uses: actions/cache@v3
+              with:
+                  path: ~/.npm
+                  key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
             - name: Install dependencies
               run: npm ci
             - name: Build website
