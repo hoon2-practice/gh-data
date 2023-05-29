@@ -29,13 +29,20 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: dist-files
-                  path: |
-                      dist
-                      package.json
+                  path: dist # 포함할거
+                  # path: |
+                  #     dist
+                  #     package.json
     deploy:
         needs: build
         runs-on: ubuntu-latest
         steps:
+            - name: Get build artifacts
+              uses: actions/download-artifact@v3 # 업로드한 아티팩트 다운로드
+              with:
+                  name: dist-files
+            - name: Output contents
+              run: ls
             - name: Deploy
               run: echo "Deploying..."
 # Job Artifacts는 작업 결과물을 저장하고 공유하기 위해 사용되는 기능
